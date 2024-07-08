@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encargos de Camisetas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Encargar Camiseta</h1>
+    <div class="form-group">
+        <label for="nombre">Nombre en la camiseta</label>
+        <input type="text" id="nombre" required>
+    </div>
+    <div class="form-group">
+        <label for="numero">Número en la camiseta</label>
+        <input type="number" id="numero" min="0" max="99" required>
+    </div>
+    <button onclick="guardarEncargo()">Guardar Encargo</button>
+
+    <h2>Mostrar Encargos</h2>
+    <div class="form-group">
+        <label for="codigo">Introduce el código:</label>
+        <input type="text" id="codigo">
+    </div>
+    <button onclick="mostrarEncargos()">Mostrar Encargos</button>
+
+    <h3>Lista de Encargos:</h3>
+    <ul id="listaEncargos"></ul>
+
+    <script>
+        function guardarEncargo() {
+            const nombre = document.getElementById('nombre').value;
+            const numero = document.getElementById('numero').value;
+
+            if (nombre && numero) {
+                let encargos = JSON.parse(localStorage.getItem('encargos')) || [];
+                encargos.push({ nombre, numero });
+                localStorage.setItem('encargos', JSON.stringify(encargos));
+                alert('Encargo guardado con éxito.');
+            } else {
+                alert('Por favor, completa ambos campos.');
+            }
+        }
+
+        function mostrarEncargos() {
+            const codigo = document.getElementById('codigo').value;
+            const listaEncargos = document.getElementById('listaEncargos');
+            listaEncargos.innerHTML = '';
+
+            if (codigo === 'NicoCreador') {
+                const encargos = JSON.parse(localStorage.getItem('encargos')) || [];
+                encargos.forEach(encargo => {
+                    const li = document.createElement('li');
+                    li.textContent = `Nombre: ${encargo.nombre}, Número: ${encargo.numero}`;
+                    listaEncargos.appendChild(li);
+                });
+            } else {
+                alert('Código incorrecto.');
+            }
+        }
+    </script>
+
+</body>
+</html>
